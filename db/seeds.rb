@@ -8,15 +8,25 @@
 
 Restaurant.destroy_all
 
-100.times do
-  category = ["Chinese", "Italian", "Japanese", "French", "Belgian"].sample
+10.times do
+  category = %w(chinese italian japanese french belgian).sample
 
   resto = Restaurant.new(
     name: Faker::Restaurant.name,
     address: Faker::Address.full_address,
-    phone_number: Faker::PhoneNumber.cell_phone_in_e164,
+    phone_number: "#{Faker::PhoneNumber.cell_phone_in_e164}",
     category: category
   )
   puts resto[:name]
   resto.save!
+
+    10.times do
+      review = Review.new(
+        content: Faker::Lorem.paragraphs,
+        rating: rand(1..5)
+      )
+      review.restaurant = resto
+      puts review[:rating]
+      review.save!
+    end
 end
